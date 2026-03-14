@@ -1,14 +1,14 @@
 {
-  "name": "innov8ors-full-stack",
+  "name": "synap-escrow",
   "version": "1.0.0",
-  "description": "Full stack Innov8ors application with auto-payment",
+  "description": "AI-powered autonomous escrow platform with automatic payment release",
   "scripts": {
-    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install && cd ../IIT && npm install",
+    "install-all": "npm install && cd web-app/backend && npm install && cd ../frontend && npm install && cd ../../backend-ai && npm install",
     "start": "concurrently \"npm run backend\" \"npm run frontend\" \"npm run ai\"",
     "dev": "concurrently \"npm run backend\" \"npm run frontend\" \"npm run ai\"",
-    "backend": "cd Innov8ors-main/backend && node server.js",
-    "frontend": "cd Innov8ors-main/frontend && npm run dev",
-    "ai": "cd IIT && node index.js",
+    "backend": "cd web-app/backend && node server.js",
+    "frontend": "cd web-app/frontend && npm run dev",
+    "ai": "cd backend-ai && node index.js",
     "stop": "taskkill /F /IM node.exe"
   },
   "dependencies": {

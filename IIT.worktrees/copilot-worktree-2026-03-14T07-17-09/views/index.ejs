@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>AI Requirement Analyzer</title>
+
+<link rel="stylesheet" href="/style.css">
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+</head>
+
+<body>
+
+<h2>AI Requirement Analyzer</h2>
+
+<textarea
+id="desc"
+placeholder="Enter project description">
+</textarea>
+
+<br>
+
+<input
+type="number"
+id="budget"
+placeholder="Enter project budget (₹)"
+style="padding:10px;width:200px;">
+
+<br><br>
+
+<button onclick="generate()">Generate Milestones</button>
+
+<button onclick="pay()">Deposit Project Budget</button>
+
+<pre id="result"></pre>
+
+<script>
+
+async function generate(){
+
+const description =
+document.getElementById("desc").value;
+
+const res = await fetch("/api/generate-milestones",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body: JSON.stringify({ description })
+
+});
+
+const data = await res.json();
+
+document.getElementById("result").innerText =
+data.milestones;
+
+}
+
+
+
+async function pay(){
+
+const amount =
+document.getElementById("budget").value;
+
+if(!amount){
+
+alert("Please enter project budget");
+
+return;
+
+}
+
+const res =
+await fetch("/api/create-payment",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body: JSON.stringify({ amount })
+
+});
+
+const order = await res.json();
+
+var options = {
+
+key: "rzp_test_SQqAVOFu5bhmIk",
+
+amount: order.amount,
+
+currency: "INR",
+
+name: "AI Escrow Agent",
+
+description: "Project Budget Deposit",
+
+order_id: order.id,
+
+handler: function (response){
+
+alert("Payment Successful!");
+
+document.getElementById("result").innerText =
+"Payment Successful\nPayment ID: "
++ response.razorpay_payment_id;
+
+}
+
+};
+
+var rzp = new Razorpay(options);
+
+rzp.open();
+
+}
+
+</script>
+
+</body>
+
+</html>
