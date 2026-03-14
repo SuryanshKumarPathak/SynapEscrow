@@ -6,6 +6,25 @@ const razorpay = new Razorpay({
 });
 
 /**
+ * Create a Razorpay order for employer budget deposit.
+ * @param {number} amount - Amount in INR
+ * @returns {Promise<Object>} Razorpay order response
+ */
+const createOrder = async (amount) => {
+  const numericAmount = Number(amount);
+
+  if (!Number.isFinite(numericAmount) || numericAmount <= 0) {
+    throw new Error('Invalid payment amount');
+  }
+
+  return razorpay.orders.create({
+    amount: Math.round(numericAmount * 100),
+    currency: 'INR',
+    receipt: `receipt_${Date.now()}`
+  });
+};
+
+/**
  * Process automatic payout to freelancer when milestone is 100% verified
  * @param {Object} paymentDetails - Payment details
  * @param {string} paymentDetails.freelancerId - Freelancer user ID
@@ -188,6 +207,7 @@ const createPaymentRecord = (paymentRecord) => {
 };
 
 module.exports = {
+  createOrder,
   processAutomaticPayout,
   getOrCreateFundAccount,
   getOrCreateContact,

@@ -22,7 +22,14 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { getStoredAuth } from '@/services/auth';
-import { createProject, fetchJobInterests, listProjects, updateJobInterestStatus } from '@/services/api';
+import {
+  createPaymentOrder,
+  createProject,
+  fetchJobInterests,
+  generateMilestones,
+  listProjects,
+  updateJobInterestStatus
+} from '@/services/api';
 
 const parseStructuredMilestones = (milestonesText = '') => {
   const text = String(milestonesText || '').trim();
@@ -128,12 +135,9 @@ function AIJobModal({ onClose, onJobPosted, employerId }) {
     setMilestones('');
     setMilestoneItems([]);
     try {
-      const res = await fetch('https://synapescrow-3.onrender.com/api/generate-milestones', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ description: `${description}\n\nTotal Budget: ₹${amount}` })
+      const { data } = await generateMilestones({
+        description: `${description}\n\nTotal Budget: ₹${amount}`
       });
-      const data = await res.json();
       if (data.success) {
         // New structured response format
         const projectTitle = data.projectTitle || description.split('\n')[0].slice(0, 60) || 'New Project';
@@ -166,8 +170,11 @@ function AIJobModal({ onClose, onJobPosted, employerId }) {
       } else {
         setError(data.error || 'AI generation failed. Please try again.');
       }
-    } catch {
-      setError('Could not reach AI server. Make sure the AI server is running on port 4000.');
+    } catch (requestError) {
+      setError(
+        requestError?.response?.data?.error ||
+        'Could not generate milestones right now. Please try again in a moment.'
+      );
     } finally {
       setLoading(false);
     }
@@ -177,15 +184,10 @@ function AIJobModal({ onClose, onJobPosted, employerId }) {
     setPayLoading(true);
     setError('');
     try {
-      const res = await fetch('https://synapescrow-3.onrender.com/api/create-payment', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: Number(amount) })
-      });
-      const order = await res.json();
+      const { data: order } = await createPaymentOrder({ amount: Number(amount) });
 
       if (!order.id) {
-        setError('Failed to create payment order. Check Razorpay keys in IIT/.env');
+        setError('Failed to create payment order. Check Razorpay keys in backend environment variables.');
         setPayLoading(false);
         return;
       }

@@ -13,11 +13,11 @@ const ensureApiBaseUrl = (rawUrl, fallbackUrl) => {
 
 const API_BASE_URL = ensureApiBaseUrl(
   process.env.NEXT_PUBLIC_API_BASE_URL,
-  'https://synapescrow-3.onrender.com/api'
+  'https://synapescrow-2.onrender.com/api'
 );
 const IIT_API_BASE_URL = ensureApiBaseUrl(
   process.env.NEXT_PUBLIC_IIT_API_BASE_URL,
-  'https://synapescrow-3.onrender.com/api'
+  'https://synapescrow-1.onrender.com/api'
 );
 
 const api = axios.create({
@@ -33,7 +33,9 @@ export const listProjects = (params) => api.get('/projects', { params });
 export const approveProjectMilestones = (projectId, payload) =>
   api.post(`/projects/${projectId}/milestones/approval`, payload);
 export const generateMilestones = (payload) =>
-  api.post('/ai/generate-milestones', payload);
+  iitApi.post('/generate-milestones', payload);
+export const createPaymentOrder = (payload) =>
+  iitApi.post('/create-payment', payload);
 export const submitMilestone = (milestoneId, payload) =>
   api.post(`/milestones/${milestoneId}/submit`, payload);
 export const fetchMilestonesByFreelancer = (freelancerId) =>
