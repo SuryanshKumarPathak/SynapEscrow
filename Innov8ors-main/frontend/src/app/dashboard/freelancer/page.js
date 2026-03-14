@@ -542,7 +542,7 @@ function ProjectVerificationModal({ project, onClose, onProjectUpdated }) {
               className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-5 py-3 text-sm font-bold text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading ? <Loader2 size={16} className="animate-spin" /> : <Sparkles size={16} />}
-              {loading ? 'Running AI Verification...' : 'Run IIT Quality Verification'}
+              {loading ? 'Running AI Verification...' : 'Run Quality Verification'}
             </button>
 
             {releaseMessage ? (
