@@ -1,0 +1,17 @@
+{
+  "name": "innov8ors-full-stack",
+  "version": "1.0.0",
+  "description": "Full stack Innov8ors application with auto-payment",
+  "scripts": {
+    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install && cd ../IIT && npm install",
+    "start": "concurrently \"npm run backend\" \"npm run frontend\" \"npm run ai\"",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\" \"npm run ai\"",
+    "backend": "cd Innov8ors-main/backend && node server.js",
+    "frontend": "cd Innov8ors-main/frontend && npm run dev",
+    "ai": "cd IIT && node index.js",
+    "stop": "taskkill /F /IM node.exe"
+  },
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
