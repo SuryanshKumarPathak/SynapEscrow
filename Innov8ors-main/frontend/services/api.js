@@ -1,7 +1,24 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000/api';
-const IIT_API_BASE_URL = process.env.NEXT_PUBLIC_IIT_API_BASE_URL || 'http://localhost:4000/api';
+const ensureApiBaseUrl = (rawUrl, fallbackUrl) => {
+  const resolvedUrl = (rawUrl || fallbackUrl || '').trim();
+
+  // Keep existing /api paths untouched and append /api when missing.
+  if (/\/api\/?$/i.test(resolvedUrl)) {
+    return resolvedUrl.replace(/\/$/, '');
+  }
+
+  return `${resolvedUrl.replace(/\/$/, '')}/api`;
+};
+
+const API_BASE_URL = ensureApiBaseUrl(
+  process.env.NEXT_PUBLIC_API_BASE_URL,
+  'https://synapescrow-3.onrender.com/api'
+);
+const IIT_API_BASE_URL = ensureApiBaseUrl(
+  process.env.NEXT_PUBLIC_IIT_API_BASE_URL,
+  'https://synapescrow-3.onrender.com/api'
+);
 
 const api = axios.create({
   baseURL: API_BASE_URL

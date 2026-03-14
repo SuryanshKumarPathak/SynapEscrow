@@ -128,7 +128,7 @@ function AIJobModal({ onClose, onJobPosted, employerId }) {
     setMilestones('');
     setMilestoneItems([]);
     try {
-      const res = await fetch('http://localhost:4000/api/generate-milestones', {
+      const res = await fetch('https://synapescrow-3.onrender.com/api/generate-milestones', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ description: `${description}\n\nTotal Budget: ₹${amount}` })
@@ -177,7 +177,7 @@ function AIJobModal({ onClose, onJobPosted, employerId }) {
     setPayLoading(true);
     setError('');
     try {
-      const res = await fetch('http://localhost:4000/api/create-payment', {
+      const res = await fetch('https://synapescrow-3.onrender.com/api/create-payment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount: Number(amount) })

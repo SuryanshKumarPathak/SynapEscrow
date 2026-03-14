@@ -12,9 +12,7 @@ const app = express();
 /* middleware */
 app.use(cors({
   origin: [
-    "http://localhost:3000",
-    "http://localhost:3001",
-    "http://localhost:3002"
+    "https://synapescrow-3.onrender.com"
   ],
   credentials: true
 }));
@@ -37,5 +35,5 @@ app.get("/", (req, res) => {
 app.use("/api", aiRoutes);
 
 app.listen(4000, () => {
-  console.log("AI Server running at http://localhost:4000");
+  console.log("AI Server running at https://synapescrow-3.onrender.com");
 });

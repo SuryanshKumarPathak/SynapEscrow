@@ -12,10 +12,7 @@ connectDB();
 app.use(
   cors({
     origin: [
-      'https://synapescrow-3.onrender.com',
-      'http://localhost:3000',
-      'http://localhost:3001',
-      'http://localhost:3002'
+      'https://synapescrow-3.onrender.com'
     ],
     credentials: true
   })
